@@ -1,0 +1,20 @@
+CREATE TABLE Database (
+    count INTEGER
+);
+
+insertCount:
+INSERT INTO Database(count)
+VALUES(?);
+
+removeAllCounts:
+DELETE FROM Database;
+
+selectAll:
+SELECT Database.*
+FROM Database;
+
+selectLastCount:
+SELECT count
+FROM Database
+ORDER BY rowid DESC
+LIMIT 1;
