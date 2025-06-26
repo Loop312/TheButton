@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'  # or 'microsoft' or 'corretto' or temurin
-          java-version: '21'  # or specify a different version
+          java-version: '22'  # or specify a different version
 
       #    - name: Run build
       #      run: ./gradlew build
