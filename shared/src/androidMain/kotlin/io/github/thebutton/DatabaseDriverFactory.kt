@@ -10,4 +10,3 @@ actual class DriverFactory(private val context: Context) {
     }
 }
 
-actual val database = createDatabase(DriverFactory(android.app.Application()))

@@ -8,5 +8,3 @@ actual class DriverFactory {
         return NativeSqliteDriver(AppDatabase.Schema, "AppDatabase.db")
     }
 }
-
-actual val database: AppDatabase = createDatabase(DriverFactory())

@@ -11,6 +11,4 @@ fun main() {
     }
 }
 
-actual fun createKeyValueStore(): KeyValueStore {
-    TODO("Not yet implemented")
-}
+actual val database = createDatabase(DriverFactory())

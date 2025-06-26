@@ -11,5 +11,3 @@ actual class DriverFactory {
         return JdbcSqliteDriver("jdbc:sqlite:AppDatabase.db", Properties(), AppDatabase.Schema)
     }
 }
-
-actual val database = createDatabase(DriverFactory())

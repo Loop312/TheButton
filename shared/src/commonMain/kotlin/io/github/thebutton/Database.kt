@@ -14,4 +14,3 @@ fun createDatabase(driverFactory: DriverFactory): AppDatabase {
     return database
 }
 
-expect val database: AppDatabase

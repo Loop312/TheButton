@@ -7,4 +7,3 @@ actual class DriverFactory() {
         TODO("Not yet implemented")
     }
 }
-actual val database = createDatabase(DriverFactory())

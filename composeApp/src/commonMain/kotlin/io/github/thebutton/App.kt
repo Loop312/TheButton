@@ -122,3 +122,5 @@ fun App() {
         }
     }
 }
+
+expect val database: AppDatabase
