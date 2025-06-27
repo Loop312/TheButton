@@ -22,4 +22,4 @@ class MyApplication : Application() {
     }
 }
 
-actual val database = createDatabase(DriverFactory(MyApplication.appContext))
+actual val database = createDatabase(DriverFactory(MyApplication.appContext)).appDatabaseQueries

@@ -13,4 +13,4 @@ fun main() = application {
     }
 }
 
-actual val database = createDatabase(DriverFactory())
+actual val database = createDatabase(DriverFactory()).appDatabaseQueries

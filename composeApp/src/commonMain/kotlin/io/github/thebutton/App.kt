@@ -1,8 +1,6 @@
 package io.github.thebutton
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -32,7 +30,7 @@ fun App() {
             // Execute the selectLastCount query.
             // SQLDelight automatically generates methods based on your .sq queries.
             // appDatabaseQueries is the generated accessor for your queries.
-            val lastCount = database.appDatabaseQueries.selectLastCount().executeAsOneOrNull()
+            val lastCount = database.selectLastCount().executeAsOneOrNull()
 
             // Update the 'count' state with the loaded value.
             // If lastCount is null (no entries in DB yet), default to 0.
@@ -60,67 +58,56 @@ fun App() {
         // Conditionally render based on loading state.
         if (isLoading) {
             // Show a loading indicator while data is being fetched from the database.
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("Loading count...", fontSize = 24.sp)
-            }
+            Text("Loading count...", fontSize = 24.sp, modifier = Modifier.align(Alignment.Center))
+
         } else {
             // Main content once data is loaded.
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            // The main interactive button.
+            Button(
+                onClick = {
+                    // 4. Increment the count.
+                    count += 5
+
+                    // 5. Save the updated count to the database.
+                    // We are inserting a new record each time the button is clicked.
+                    // The 'selectLastCount' query will always retrieve the most recent one.
+                    // Convert Int count to Long for SQLDelight's insert method.
+                    try {
+                        database.insertCount(count.toLong())
+                        println("Count saved: $count") // For debugging
+                        println(database.selectAll().executeAsList())
+                    } catch (e: Exception) {
+                        println("Error saving count to database: ${e.message}")
+                    }
+                },
+                shape = CircleShape,
+                modifier = Modifier
+                    .size(dynamicButtonSize.dp) // Use dynamic size here
+                    .align(Alignment.Center)
             ) {
-                // The main interactive button.
-                Button(
-                    onClick = {
-                        // 4. Increment the count.
-                        count += 5
-
-                        // 5. Save the updated count to the database.
-                        // We are inserting a new record each time the button is clicked.
-                        // The 'selectLastCount' query will always retrieve the most recent one.
-                        // Convert Int count to Long for SQLDelight's insert method.
-                        try {
-                            database.appDatabaseQueries.insertCount(count.toLong())
-                            println("Count saved: $count") // For debugging
-                            println(database.appDatabaseQueries.selectAll().executeAsList())
-                        } catch (e: Exception) {
-                            println("Error saving count to database: ${e.message}")
-                        }
-                    },
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .size(dynamicButtonSize.dp) // Use dynamic size here
-                ) {
-                    Text(
-                        text = "$count",
-                        fontSize = dynamicFontSize,
-                    )
-                }
-
-                // Add a "Reset" button for testing and demonstration purposes.
-                // This clears all entries in the database and resets the in-memory count.
-                Button(
-                    onClick = {
-                        count = 0
-                        try {
-                            database.appDatabaseQueries.removeAllCounts()
-                            println("Database cleared and count reset.")
-                        } catch (e: Exception) {
-                            println("Error clearing database: ${e.message}")
-                        }
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally) // Align the reset button
-                ) {
-                    Text("Reset Count & Clear DB")
-                }
+                Text(
+                    text = "$count",
+                    fontSize = dynamicFontSize,
+                )
+            }
+            // Add a "Reset" button for testing and demonstration purposes.
+            // This clears all entries in the database and resets the in-memory count.
+            Button(
+                onClick = {
+                    count = 0
+                    try {
+                        database.removeAllCounts()
+                        println("Database cleared and count reset.")
+                    } catch (e: Exception) {
+                        println("Error clearing database: ${e.message}")
+                    }
+                },
+                modifier = Modifier.align(Alignment.BottomCenter) // Align the reset button
+            ) {
+                Text("Reset Count & Clear DB")
             }
         }
     }
 }
 
-expect val database: AppDatabase
+expect val database: AppDatabaseQueries
